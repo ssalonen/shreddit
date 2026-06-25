@@ -1,0 +1,23 @@
+{
+  "name": "Shreddit",
+  "identifier": "com.ssalonen.shreddit.source",
+  "sourceURL": "https://raw.githubusercontent.com/ssalonen/shreddit/main/altstore-source.json",
+  "apps": [
+    {
+      "name": "Shreddit",
+      "bundleIdentifier": "com.ssalonen.shreddit",
+      "developerName": "ssalonen",
+      "subtitle": "Remove Reddit's app-install nag on mobile Safari",
+      "localizedDescription": "A Safari Web Extension that removes Reddit's \"Get the app to keep using Reddit\" blocking sheet on mobile Safari and restores scrolling.\n\nIt runs real JavaScript at document_start, releases the body scroll-lock, neutralizes the blocking bottom-sheet (and its fog overlay), and self-heals against re-injection and rotating element IDs — succeeding where content-blocker rules fail.",
+      "iconURL": "https://raw.githubusercontent.com/ssalonen/shreddit/main/icon.png",
+      "tintColor": "FF4500",
+      "category": "utilities",
+      "version": "0.0.0",
+      "versionDescription": "No release yet.",
+      "downloadURL": "",
+      "size": 0,
+      "versions": []
+    }
+  ],
+  "news": []
+}
