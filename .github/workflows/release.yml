@@ -18,7 +18,7 @@ permissions:
 
 env:
   APP_NAME: Shreddit
-  BUNDLE_ID: com.ssalonen.Shreddit
+  BUNDLE_ID: com.ssalonen.shreddit
 
 jobs:
   release:
@@ -92,6 +92,26 @@ jobs:
           echo "PROJ=$PROJ" >> "$GITHUB_ENV"
           echo "Generated project: $PROJ"
           xcodebuild -list -project "$PROJ"
+
+      - name: Normalise parent app bundle identifier to lowercase
+        run: |
+          PBXPROJ=$(find "$RUNNER_TEMP/gen" -name "project.pbxproj" | head -1)
+          # The converter derives the parent app's PRODUCT_BUNDLE_IDENTIFIER from
+          # --app-name (Shreddit → com.ssalonen.Shreddit, capital S) rather than
+          # from --bundle-identifier (com.ssalonen.shreddit, lowercase s).
+          # This causes two failures:
+          #   1. Xcode ValidateEmbeddedBinary: case-sensitive prefix check fails
+          #      because com.ssalonen.shreddit.Extension ≠ com.ssalonen.Shreddit.*
+          #   2. SideStore re-signing: uses altstore-source.json bundleIdentifier
+          #      (com.ssalonen.shreddit, lowercase) as the prefix to strip/replace
+          #      in extension bundle IDs.  Case mismatch causes it to use the
+          #      parent's re-signed ID for the extension too, making both identical.
+          # Fix: normalise the parent's ID to lowercase so it matches --bundle-identifier.
+          sed -i '' \
+            's/PRODUCT_BUNDLE_IDENTIFIER = com\.ssalonen\.Shreddit;/PRODUCT_BUNDLE_IDENTIFIER = com.ssalonen.shreddit;/g' \
+            "$PBXPROJ"
+          echo "Bundle identifiers after patch:"
+          grep "PRODUCT_BUNDLE_IDENTIFIER" "$PBXPROJ"
 
       - name: Pick app scheme
         run: |
