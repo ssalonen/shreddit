@@ -18,7 +18,7 @@ permissions:
 
 env:
   APP_NAME: Shreddit
-  BUNDLE_ID: com.ssalonen.shreddit
+  BUNDLE_ID: com.ssalonen.Shreddit
 
 jobs:
   release:
